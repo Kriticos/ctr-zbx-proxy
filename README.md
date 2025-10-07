@@ -21,7 +21,7 @@ docker network create --driver bridge network-share --subnet=172.18.0.0/16
 
 ```bash
 bskp/
-└── ctr-zbx/                 # Projeto Zabbix
+└── ctr-zbx-proxy            # Projeto Zabbix - Proxy
      ├── docker-compose.yml  # Definição dos serviços Docker
      ├── .env.example        # Exemplo de variáveis de ambiente
      └── README.md           # Documentação do serviço
@@ -32,7 +32,7 @@ bskp/
 Copie o template e preencha os valores:
 
 ```bash
-cp /bskp/ctr-zbx/.env.example /bskp/ctr-zbx/.env
+cp /bskp/ctr-zbx-proxy/.env.example /bskp/ctr-zbx-proxy/.env
 ```
 
 ## Criando a base de dados
