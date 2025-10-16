@@ -78,8 +78,17 @@ docker logs -f ctr-zbx-proxy
 
 No host do servidor Zabbix:
 
+>OBS: colocar o nome do proxy conforme configurado no .env
+
 ```bash
 docker exec -it ctr-zbx-proxy zabbix_proxy -T
+```
+
+Retorno esperado se tudo estiver OK:
+
+```bash
+Validating configuration file "/etc/zabbix/zabbix_proxy.conf"
+Validation successful
 ```
 
 Se a comunicação estiver OK, o proxy aparecerá na interface do Zabbix em alguns minutos.
