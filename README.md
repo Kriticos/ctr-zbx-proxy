@@ -20,11 +20,12 @@ docker network create --driver bridge network-share --subnet=172.18.0.0/16
 ## Estrutura de arquivos
 
 ```bash
-bskp/
-└── ctr-zbx-proxy            # Projeto Zabbix - Proxy
-     ├── docker-compose.yml  # Definição dos serviços Docker
-     ├── .env.example        # Exemplo de variáveis de ambiente
-     └── README.md           # Documentação do serviço
+bskp-amplitec/
+└── stack
+     └── ctr-zbx-proxy            # Zabbix - Proxy
+          ├── docker-compose.yml  # Definição dos serviços Docker
+          ├── .env.example        # Exemplo de variáveis de ambiente
+          └── README.md           # Documentação do serviço
 ```
 
 ## Configuração das variáveis de ambiente
