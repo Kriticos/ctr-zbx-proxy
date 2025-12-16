@@ -1,2 +1,6 @@
-# Ignore todos os arquivos .env em qualquer pasta
-**/.env
+# Environment variables
+.env
+.env.*
+
+# Exceto o exemplo
+!.env.example
