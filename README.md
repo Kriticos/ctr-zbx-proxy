@@ -5,51 +5,39 @@ Este repositório contém a configuração para subir um container Zabbix Proxy 
 ## Pré-requisitos
 
 - Docker e Docker Compose.
-- Rede Docker network-share já criada:
-- Container ctr-mysql rodando.
+- Rede Docker network-share.
 - Container Zabbix Server rodando.
-
-## Criar a rede externa se ainda não existir
-
-Observe que a rede deve ser do tipo `bridge` e com um subnet que não conflite com outras redes na sua infraestrutura.
-
-```bash
-docker network create --driver bridge network-share --subnet=172.18.0.0/16
-````
 
 ## Estrutura de arquivos
 
 ```bash
-bskp-amplitec/
-└── stack
-     └── ctr-zbx-proxy            # Zabbix - Proxy
-          ├── docker-compose.yml  # Definição dos serviços Docker
-          ├── .env.example        # Exemplo de variáveis de ambiente
-          └── README.md           # Documentação do serviço
+.
+├── .env                # variáveis de ambiente
+├── .env.example        # Exemplo de variáveis de ambiente
+├── .gitignore
+├── docker-compose.yml  # Definição dos serviços Docker
+├── prepare.sh          # Script para criação das pastas e rede
+└── README.md           # Documentação do serviço
 ```
 
 ## Configuração das variáveis de ambiente
 
-Copie o template e preencha os valores:
+Acesse a pasta do container
 
 ```bash
-cp /bskp/ctr-zbx-proxy/.env.example /bskp/ctr-zbx-proxy/.env
+cp .env.example .env
 ```
 
-## Criando a base de dados
+## Preparando o ambiente
 
-### Acesse o container do ctr-mysql e crie a base de dados para o Zabbix:
+Acesse a pasta do container
 
 ```bash
-docker exec -it ctr-mysql mysql -u root -p
+chmod +x prepare.sh
 ```
 
-```sql
-CREATE DATABASE IF NOT EXISTS zabbix_proxy CHARACTER SET utf8 COLLATE utf8_bin;
-CREATE USER 'zbxproxy'@'%' IDENTIFIED BY 'X95!HZ*3fpqZ';
-GRANT ALL PRIVILEGES ON zabbix_proxy.* TO 'zbxproxy'@'%';
-FLUSH PRIVILEGES;
-exit
+```bash
+./prepare.sh
 ```
 
 ## Subindo o container
