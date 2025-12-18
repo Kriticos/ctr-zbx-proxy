@@ -6,11 +6,11 @@ echo "📁 Iniciando preparação das pastas do ambiente..."
 SCRIPT_DIR="$(dirname "$(realpath "$0")")"
 
 # Dois níveis acima do script
-BASE_DIR="$(realpath "$SCRIPT_DIR/../..")"
+BASE_DIR="$(realpath "$SCRIPT_DIR/./.")"
 
 # Pastas de dados (volumes persistentes)
 DATA_DIRS=(
-  "$BASE_DIR/data/zabbix-proxy/db_data"
+  "$BASE_DIR/database"
 )
 
 # Criando diretórios
@@ -24,8 +24,8 @@ for DIR in "${DATA_DIRS[@]}"; do
 done
 
 echo "🔧 Ajustando permissões..."
-chown -R 1997:1997 "$BASE_DIR/data/zabbix-proxy"
-chmod -R 770 $BASE_DIR/data/zabbix-proxy
+chown -R 1997:1997 "$BASE_DIR/database"
+chmod -R 770 $BASE_DIR/database
 
 # Configurando rede Docker personalizada
 if ! docker network ls | grep -q "network-share"; then
