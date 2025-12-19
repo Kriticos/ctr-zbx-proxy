@@ -2,7 +2,6 @@ services:
   zbx-server:
     build:
       context: .
-      dockerfile: Dockerfile
     image: bskp-pro:zbx-odbc
     container_name: ${ZBX_SERVER_HOST}
     environment:
@@ -13,8 +12,6 @@ services:
       TZ: ${TZ}
     ports:
       - ${PORTS_ZBX}
-    volumes:
-      - ${VOL_ODBC_INI}
     networks:
       network-share:
         ipv4_address: ${IPV4_ZBX_SERVER_HOST}
