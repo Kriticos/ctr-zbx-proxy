@@ -1,21 +1,69 @@
 services:
-  ctr-zbx-proxy:
-    image: zabbix/zabbix-proxy-sqlite3:alpine-7.4-latest
-    container_name: ${CONTAINER_NAME}
-    restart: unless-stopped
+  zbx-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: bskp-pro:zbx-odbc
+    container_name: ${ZBX_SERVER_HOST}
     environment:
-      - ZBX_HOSTNAME=${ZBX_HOSTNAME}
-      - ZBX_SERVER_HOST=${ZBX_SERVER_HOST}
-    volumes:
-      - ${VOL_TIMEZONE}
-      - ${VOL_LOCALTIME}
-      - ${VOL_SQLITE}
+      DB_SERVER_HOST: ${DB_SERVER_HOST}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      TZ: ${TZ}
     ports:
-      - "10051:10051"
+      - ${PORTS_ZBX}
+    volumes:
+      - ${VOL_ODBC_INI}
     networks:
       network-share:
-        ipv4_address: ${IPV4_PROXY}
+        ipv4_address: ${IPV4_ZBX_SERVER_HOST}
+    restart: unless-stopped
+
+  zbx-frontend:
+    image: ${RELEASE}
+    container_name: ${ZBX_SERVER_FRONTEND}
+    environment:
+      ZBX_SERVER_HOST: ${ZBX_SERVER_HOST}
+      DB_SERVER_HOST: ${DB_SERVER_HOST}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      DB_SERVER_DBNAME: ${MYSQL_DATABASE}
+      DB_SERVER_USER: ${MYSQL_USER}
+      DB_SERVER_PASS: ${MYSQL_PASSWORD}
+      PHP_TZ: ${TZ}
+      DB_SERVER_PORT: ${DB_SERVER_PORT:-3306}
+      ZBX_DB_ENCRYPTION: 'false'
+      ZBX_DB_VERIFY_HOST: 'false'
+    ports:
+      - ${PORTS_FRONTEND}
+    networks:
+      network-share:
+        ipv4_address: ${IPV4_ZBX_FRONTEND}
+    restart: unless-stopped
+
+  zbx-agent:
+    image: ${RELEASE_AGENT}
+    container_name: ${ZBX_SERVER_AGENT}
+    environment:
+      ZBX_HOSTNAME: ${ZBX_SERVER_HOST}
+      ZBX_SERVER_HOST: ${ZBX_SERVER_HOST}
+      DB_SERVER_HOST: ${DB_SERVER_HOST}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      TZ: ${TZ}
+    ports:
+      - ${PORTS_AGENT}
+    networks:
+      network-share:
+        ipv4_address: ${IPV4_ZBX_AGENT}
+    restart: unless-stopped
 
 networks:
   network-share:
     external: true
+    ipam:
+      config:
+        - subnet: ${SUBNET}

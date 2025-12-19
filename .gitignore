@@ -3,7 +3,7 @@
 .env.*
 
 # Zabbix Proxy database
-/database
+/odbc/*.ini
 
 # Exceto o exemplo
 !.env.example
