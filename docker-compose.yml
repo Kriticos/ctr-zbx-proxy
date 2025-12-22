@@ -3,28 +3,19 @@ services:
     image: zabbix/zabbix-proxy-sqlite3:alpine-7.4-latest
     container_name: ${CONTAINER_NAME}
     restart: unless-stopped
-  zbx-server:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: bskp-pro:zbx-odbc
-    container_name: ${ZBX_SERVER_HOST}
     environment:
       - ZBX_HOSTNAME=${ZBX_HOSTNAME}
       - ZBX_SERVER_HOST=${ZBX_SERVER_HOST}
-      - DB_SERVER_HOST: ${DB_SERVER_HOST}
-      - MYSQL_DATABASE: ${MYSQL_DATABASE}
-      - MYSQL_USER: ${MYSQL_USER}
-      - MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      - TZ: ${TZ}
-    ports:
-      - ${PORTS_ZBX}
     volumes:
       - ${VOL_TIMEZONE}
       - ${VOL_LOCALTIME}
       - ${VOL_SQLITE}
-      - ${VOL_ODBC_INI}
+    ports:
+      - "10051:10051"
     networks:
       network-share:
-        ipv4_address: ${IPV4_ZBX_SERVER_HOST}
-    restart: unless-stopped
+        ipv4_address: ${IPV4_PROXY}
+
+networks:
+  network-share:
+    external: true
