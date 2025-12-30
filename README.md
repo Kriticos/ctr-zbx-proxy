@@ -4,7 +4,7 @@ Este repositório contém a configuração para subir um container Zabbix Proxy 
 
 ## Pré-requisitos
 
-- Docker e Docker Compose.
+- [Docker e Docker Compose](https://docs.docker.com/engine/install/)
 - Rede Docker network-share.
 - Container Zabbix Server rodando.
 
